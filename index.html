@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distribuidor de Ingresos 50/30/20</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#4CAF50,#2196F3);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.container{
+background:white;
+padding:30px;
+border-radius:20px;
+max-width:900px;
+width:100%;
+box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+h1{
+text-align:center;
+margin-bottom:20px;
+color:#333;
+}
+
+.input-group{
+display:flex;
+gap:10px;
+margin-bottom:25px;
+}
+
+input{
+flex:1;
+padding:12px;
+font-size:18px;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+button{
+padding:12px 25px;
+background:#4CAF50;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:17px;
+}
+
+button:hover{
+background:#3b9440;
+}
+
+.resultados{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+margin-top:20px;
+}
+
+.card{
+padding:20px;
+border-radius:15px;
+color:white;
+text-align:center;
+font-size:18px;
+}
+
+.necesidades{
+background:#ff9800;
+}
+
+.deseos{
+background:#2196F3;
+}
+
+.ahorro{
+background:#4CAF50;
+}
+
+canvas{
+margin-top:30px;
+max-height:400px;
+}
+
+.recomendaciones{
+margin-top:35px;
+background:#f4f4f4;
+padding:20px;
+border-radius:15px;
+}
+
+.recomendaciones h2{
+margin-bottom:10px;
+color:#333;
+}
+
+.recomendaciones ul{
+padding-left:20px;
+line-height:1.8;
+}
+
+footer{
+text-align:center;
+margin-top:20px;
+color:#777;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>💰 Calculadora Financiera 50 / 30 / 20</h1>
+
+<div class="input-group">
+<input type="number" id="ingreso" placeholder="Ingrese su ingreso mensual">
+<button onclick="calcular()">Calcular</button>
+</div>
+
+<div class="resultados">
+
+<div class="card necesidades">
+<h3>Necesidades</h3>
+<p id="n">$0</p>
+</div>
+
+<div class="card deseos">
+<h3>Deseos</h3>
+<p id="d">$0</p>
+</div>
+
+<div class="card ahorro">
+<h3>Ahorro</h3>
+<p id="a">$0</p>
+</div>
+
+</div>
+
+<canvas id="grafico"></canvas>
+
+<div class="recomendaciones">
+
+<h2>📌 Recomendaciones</h2>
+
+<ul>
+<li>Destina el <strong>50%</strong> a gastos esenciales como vivienda, alimentación, transporte y servicios.</li>
+
+<li>Utiliza el <strong>30%</strong> para entretenimiento, compras, viajes y actividades recreativas.</li>
+
+<li>Ahorra al menos el <strong>20%</strong> para emergencias, inversiones o metas futuras.</li>
+
+<li>Si tus gastos esenciales superan el 50%, intenta reducir gastos variables.</li>
+
+<li>Automatiza el ahorro apenas recibas tu sueldo.</li>
+
+<li>Mantén un fondo de emergencia equivalente a entre 3 y 6 meses de gastos.</li>
+
+<li>Revisa tu presupuesto todos los meses.</li>
+
+</ul>
+
+</div>
+
+<footer>
+Regla financiera 50/30/20
+</footer>
+
+</div>
+
+<script>
+
+let grafico;
+
+function calcular(){
+
+let ingreso = parseFloat(document.getElementById("ingreso").value);
+
+if(isNaN(ingreso)|| ingreso<=0){
+alert("Ingrese un ingreso válido.");
+return;
+}
+
+let necesidades = ingreso*0.50;
+let deseos = ingreso*0.30;
+let ahorro = ingreso*0.20;
+
+document.getElementById("n").innerHTML="$"+necesidades.toLocaleString("es-CL");
+document.getElementById("d").innerHTML="$"+deseos.toLocaleString("es-CL");
+document.getElementById("a").innerHTML="$"+ahorro.toLocaleString("es-CL");
+
+const ctx=document.getElementById("grafico");
+
+if(grafico){
+grafico.destroy();
+}
+
+grafico=new Chart(ctx,{
+type:"pie",
+data:{
+labels:[
+"Necesidades (50%)",
+"Deseos (30%)",
+"Ahorro (20%)"
+],
+datasets:[{
+data:[
+necesidades,
+deseos,
+ahorro
+],
+backgroundColor:[
+"#FF9800",
+"#2196F3",
+"#4CAF50"
+]
+}]
+},
+options:{
+responsive:true,
+plugins:{
+legend:{
+position:"bottom"
+},
+title:{
+display:true,
+text:"Distribución del ingreso"
+}
+}
+}
+});
+
+}
+
+</script>
+
+</body>
+</html>
